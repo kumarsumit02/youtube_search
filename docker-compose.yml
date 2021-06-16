@@ -16,7 +16,6 @@ services:
       - .:/application
       - ~/.ssh:/root/.ssh
       - server-logs:/application/server/logs
-      - server-site-packages:/usr/local/lib/python3.8/site-packages
       - server-usr-local-bin:/usr/local/bin
     command: python server/manage.py runserver 0:8000
     working_dir: /application

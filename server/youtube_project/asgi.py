@@ -1,5 +1,5 @@
 """
-ASGI youtube_search for backend project.
+ASGI youtube_project for backend project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'youtube_search.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'youtube_project.settings')
 
 application = get_asgi_application()
