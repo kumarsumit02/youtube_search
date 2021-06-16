@@ -31,6 +31,26 @@ services:
       - .:/shared
       - postgres-data:/var/lib/postgresql/data
       - ./db_scripts:/docker-entrypoint-initdb.d/
+  redis:
+    image: "redis:alpine"
+    ports:
+      - '6379:6379'
+  celery:
+    build: ./server
+    command: celery -A youtube_project worker -l info
+    volumes:
+      - .:/code
+    depends_on:
+      - postgres
+      - redis
+  celery-beat:
+    build: ./server
+    command: celery -A youtube_project beat -l info
+    volumes:
+      - .:/code
+    depends_on:
+      - postgres
+      - redis
 volumes:
   server-site-packages:
     driver: local

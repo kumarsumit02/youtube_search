@@ -30,7 +30,7 @@ ALLOWED_HOSTS = ['*']
 
 # Application definition
 
-INSTALLED_APPS = [
+LOCAL_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -41,10 +41,11 @@ INSTALLED_APPS = [
     'django_extensions',
     'corsheaders',
     'django_celery_beat',
+    'django_celery_results',
 ]
 
-CREATED_APPS = []
-INSTALLED_APPS = INSTALLED_APPS + CREATED_APPS
+CREATED_APPS = ['apps.video_search']
+INSTALLED_APPS = LOCAL_APPS + CREATED_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -136,13 +137,10 @@ REST_FRAMEWORK = {
 }
 VIDEOS_JOB_INTERVAL = 10
 
-# Celery Configuration
-CELERY_RESULT_BACKEND = 'rpc'
+# Celery
 CELERY_BROKER_URL = 'redis://redis:6379/0'
-CELERYBEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
-CELERY_TASK_RESULT_EXPIRES = 7 * 86400  # 7 days
-
-# needed for worker monitoring
-CELERY_SEND_EVENTS = True
-CELERY_ENABLE_UTC = False
+CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = TIME_ZONE
