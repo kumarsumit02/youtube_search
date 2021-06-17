@@ -1,5 +1,4 @@
 from rest_framework.viewsets import ModelViewSet
-from rest_framework import generics
 
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.filters import SearchFilter, OrderingFilter
@@ -22,6 +21,6 @@ class VideoDataApi(ModelViewSet):
 class ApiKeyDataApi(ModelViewSet):
     """ ModelViewSet of APIKeys APIs """
 
-    http_method_names = ['get','post']
+    http_method_names = ['get', 'post']
     queryset = ApiKey.objects.all()
     serializer_class = ApiKeySerializer

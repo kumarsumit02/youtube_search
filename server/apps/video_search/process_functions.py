@@ -58,7 +58,7 @@ def get_new_video_objects(api_params):
         else:
             logger.info(f'All data fetched count - {str(len(total_video_objects))}')
             break
-        
+
     return total_video_objects
 
 

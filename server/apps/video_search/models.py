@@ -3,6 +3,7 @@ from encrypted_fields import fields
 
 from youtube_project.config import ModelConfig
 
+
 class Videos(models.Model):
     """ Model to Store Video details """
 
@@ -28,11 +29,15 @@ class Videos(models.Model):
         """ creates multiple video entries """
         Videos.objects.bulk_create(video_objects, batch_size=ModelConfig.BULK_CREATE_BATCH_SIZE)
 
+    def get_all_videos():
+        """ returns the """
+        return Videos.objects.all().order_by('-published_at')
+
 
 class ApiKey(models.Model):
     """ Model to store API Keys """
 
-    key =  fields.EncryptedCharField(max_length=255)
+    key = fields.EncryptedCharField(max_length=255)
     last_used = models.DateTimeField(null=True)
 
     def __str__(self):

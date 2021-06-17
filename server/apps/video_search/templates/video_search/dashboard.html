@@ -1,0 +1,55 @@
+{%  extends 'video_search/main.html' %}
+
+{% block content %}
+
+	<br>
+
+<br>
+<div class="row">
+	<div class="col">
+		<div class="card card-body">
+
+			<form method="get">
+				{{myFilter.form}}
+
+		    <button class="btn btn-primary" type="submit">Search</button>
+		  </form>
+
+		</div>
+	</div>
+	
+</div>
+<br>
+
+<div class="card card-body">
+	<h5>Total Results - {{row_count}} </h5>
+</div>
+<br>
+
+<div class="row">
+	<div class="col-md">
+		<div class="card card-body">
+			<table class="table table-sm">
+				<tr>
+					<th>Video Title</th>
+					<th>Video Description</th>
+					<th>Thumnail</th>
+					<th>Published at</th>
+				</tr>
+
+				{% for video in videos %}
+
+				<tr>
+					<td>{{video.title}}</td>
+					<td>{{video.description}}</td>
+					<td>{{video.thumbnail_url}}</td>
+					<td>{{video.published_at}}</td>
+				</tr>
+				{% endfor %}
+
+			</table>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

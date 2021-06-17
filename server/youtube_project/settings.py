@@ -34,6 +34,7 @@ LOCAL_APPS = [
     'django_celery_beat',
     'django_celery_results',
     'encrypted_fields',
+    'django_filters'
 ]
 
 CREATED_APPS = ['apps.video_search']
