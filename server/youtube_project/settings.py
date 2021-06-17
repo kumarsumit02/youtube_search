@@ -12,24 +12,15 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from youtube_project.config import DjangoSettingsConfig
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'ucuv6h6dlnl4xd2b*uxzwrt@z&47x_=2cdr$*340y8^&7)h-jx'
-
-# SECURITY WARNING: don't run with debug turned on in production!
+SECRET_KEY = DjangoSettingsConfig.DJANGO_SECRET
 DEBUG = True
-
 ALLOWED_HOSTS = ['*']
 
 
 # Application definition
-
 LOCAL_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -42,9 +33,11 @@ LOCAL_APPS = [
     'corsheaders',
     'django_celery_beat',
     'django_celery_results',
+    'encrypted_fields',
 ]
 
 CREATED_APPS = ['apps.video_search']
+
 INSTALLED_APPS = LOCAL_APPS + CREATED_APPS
 
 MIDDLEWARE = [
@@ -79,9 +72,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'youtube_project.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -91,10 +81,6 @@ DATABASES = {
         'PORT': 5432
     }
 }
-
-
-# Password validation
-# https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -112,32 +98,23 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/2.2/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.2/howto/static-files/
+FIELD_ENCRYPTION_KEYS = [DjangoSettingsConfig.ENCRYPTION_KEY]
 
 STATIC_URL = '/static/'
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 30
+    'PAGE_SIZE': DjangoSettingsConfig.API_RESPONSE_PAGE_SIZE
 }
-VIDEOS_JOB_INTERVAL = 10
 
-# Celery
+# Celery Configs
 CELERY_BROKER_URL = 'redis://redis:6379/0'
 CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
 CELERY_ACCEPT_CONTENT = ['application/json']
