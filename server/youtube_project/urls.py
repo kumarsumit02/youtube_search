@@ -16,10 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from apps.video_search.views import VideoDataApiView, VideoSearchApiView
+from apps.video_search.views import VideoDataApiView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/videos', VideoDataApiView.as_view(), name='video_data'),
-    path('api/v1/videos_search', VideoSearchApiView.as_view(), name='video_search'),
+    # path('api/v1/video_search', VideoSearchApiView.as_view(), name='video_search'),
 ]

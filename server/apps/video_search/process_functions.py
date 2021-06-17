@@ -1,6 +1,8 @@
 import requests
 
-from apps.video_search.models import Videos
+from django.utils import timezone
+
+from apps.video_search.models import Videos, ApiKey
 
 
 def get_existing_latest_video_published_time():
@@ -25,7 +27,12 @@ def get_api_response(api_params, page_token=None):
     response = requests.request('GET', url, params=api_params)
     response_data = response.json()
 
-    return response_data
+    if response.status_code == 200:
+        return response_data
+    else:
+        print('Error occured - ' + str(response_data))
+
+    return {}
 
 
 def get_api_call(api_params):
@@ -62,10 +69,22 @@ def get_api_call(api_params):
     return total_video_objects
 
 
+def get_least_recently_used_api_key():
+
+    return ApiKey.objects.order_by('last_used')[0]
+
+
+def update_api_key(api_key_object):
+
+    api_key_object.last_used = timezone.now()
+    api_key_object.save()
+
 def get_new_youtube_videos(published_time):
     
+    api_key_object = get_least_recently_used_api_key()
+
     api_params = {
-        'key': 'AIzaSyCBJ_jjCWHEIWJlAsN9LEfJgd2hUeUm_1k',
+        'key': api_key_object.key,
         'type': 'video',
         'order': 'date',
         'part': 'snippet',
@@ -78,7 +97,11 @@ def get_new_youtube_videos(published_time):
         formatted_published_time = published_time.strftime('%Y-%m-%dT%H:%M:%SZ')
         api_params.update({'publishedAfter': formatted_published_time})
 
-    return get_api_call(api_params)
+    new_video_objects = get_api_call(api_params)
+    update_api_key(api_key_object)
+
+    return new_video_objects
+
 
 def store_newly_published_videos(video_objects):
 
