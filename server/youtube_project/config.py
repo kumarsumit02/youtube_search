@@ -20,7 +20,7 @@ class BackgroundTaskConfig(object):
     API_URL = 'https://www.googleapis.com/youtube/v3/search'
     MAX_ROWS_IN_SINGLE_API_CALL = 60
     WORD_TO_QUERY = 'bitcoin'
-    DEFAULT_API_KEY = 'AIzaSyBGL9YNK2E6IvbYNEpt2bqqNK1LZKRPlrA'
+    DEFAULT_API_KEY = 'AIzaSyAh6_Q2BGMTRoKnBqPPYqM-1FWiXVO3WYs'
 
 
 class ModelConfig(object):

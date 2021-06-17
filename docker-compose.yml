@@ -6,19 +6,13 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
-    links:
+    depends_on:
       - postgres
-    expose:
-      - 8000
     ports:
-      - "8000:8000"
+      - 80:8000
     volumes:
       - .:/application
-      - ~/.ssh:/root/.ssh
-      - server-logs:/application/server/logs
-      - server-usr-local-bin:/usr/local/bin
-    command: python server/manage.py runserver 0:8000
-    working_dir: /application
+    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
   postgres:
     image: postgres:12
     environment:
@@ -26,11 +20,9 @@ services:
     expose:
       - 5432
     ports:
-      - "5432:5432"
+      - 5432:5432
     volumes:
       - .:/shared
-      - postgres-data:/var/lib/postgresql/data
-      - ./db_scripts:/docker-entrypoint-initdb.d/
   redis:
     image: "redis:alpine"
     ports:
@@ -39,7 +31,7 @@ services:
     build: ./server
     command: celery -A youtube_project worker -l info
     volumes:
-      - .:/code
+      - .:/shared
     depends_on:
       - postgres
       - redis
@@ -47,18 +39,7 @@ services:
     build: ./server
     command: celery -A youtube_project beat -l info
     volumes:
-      - .:/code
+      - .:/shared
     depends_on:
       - postgres
       - redis
-volumes:
-  server-site-packages:
-    driver: local
-  postgres-data:
-    driver: local
-  server-logs:
-    driver: local
-  server-usr-local-bin:
-    driver: local
-  redisdata:
-    driver: local
